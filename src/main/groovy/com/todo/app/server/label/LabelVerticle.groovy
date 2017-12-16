@@ -25,6 +25,9 @@ class LabelVerticle extends AbstractVerticle {
         router.get("/label/list").handler(this.&list)
         router.get("/label/add").handler(this.&add)
         router.post("/label/save").handler(this.&save)
+        router.get("/label/edit").handler(this.&edit)
+        router.get("/label/edit/:labelId").handler(this.&edit)
+        router.get("/label/delete/:labelId").handler(this.&delete)
 //        router.get("/label/delete").handler(this.&delete)
 //        router.post("/label/update").handler(this.&update)
         vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
@@ -78,7 +81,7 @@ class LabelVerticle extends AbstractVerticle {
         println "========Going to save label=============" + ctx.request().getFormAttribute("name")
         JsonObject label = new JsonObject().put("name", ctx.request().getFormAttribute("name"))
         label.put("uuid", UUID.randomUUID().toString())
-        mongoClient.save("label", label, { res ->
+        mongoClient.save(DEFAULT_COLLECTION, label, { res ->
             if (res.succeeded()) {
                 String id = res.result();
                 System.out.println("Saved Label With Id" + id);
@@ -90,5 +93,88 @@ class LabelVerticle extends AbstractVerticle {
 
     }
 
+    void edit(RoutingContext ctx) {
 
+
+        println "==========Editing the Label===================="
+        println "==========Editing the Label====================" + ctx.request().getParam("labelId")
+        String labelId = ctx.request().getParam("labelId")
+        JsonObject query = new JsonObject().put("_id", labelId)
+        Label label = null
+        mongoClient.find(DEFAULT_COLLECTION, query, { res ->
+            if (res.succeeded()) {
+                for (JsonObject json : res.result()) {
+                    println "json  " + json
+                    label = new Label(json)
+                    ctx.put("labelName", label?.name)
+                    ctx.put("labelId", label?.id)
+                }
+
+            } else {
+                res.cause().printStackTrace();
+
+            }
+
+        })
+
+        engine.render(ctx, "templates/label/edit", { res ->
+            if (res.succeeded()) {
+                ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
+            } else {
+                ctx.fail(res.cause())
+            }
+        })
+
+    }
+
+    void update(RoutingContext ctx) {
+        println "==========Editing the Label===================="
+        println "==========Editing the Label====================" + ctx.request().getParam("labelId")
+        String labelId = ctx.request().getParam("labelId")
+        JsonObject query = new JsonObject().put("_id", labelId)
+        mongoClient.find(DEFAULT_COLLECTION, query, { res ->
+            if (res.succeeded()) {
+                for (JsonObject json : res.result()) {
+                    println "json  " + json
+                    Label label = new Label(json)
+                    ctx.put("label", label)
+                }
+
+
+            } else {
+
+                res.cause().printStackTrace();
+
+            }
+
+        })
+
+        engine.render(ctx, "templates/label/edit", { res ->
+            if (res.succeeded()) {
+                ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
+            } else {
+                ctx.fail(res.cause())
+            }
+        })
+
+    }
+
+
+    void delete(RoutingContext ctx) {
+        println "==========Deleting the Label===================="
+        String labelId = ctx.request().getParam("labelId")
+        println "labelId   " + labelId
+        println "labelId   " + labelId
+        JsonObject query = new JsonObject().put("_id", labelId)
+        mongoClient.remove(DEFAULT_COLLECTION, query, { res ->
+            if (res.succeeded()) {
+                System.out.println(" deleted !!!!");
+                ctx.response().putHeader("location", "/label/list").setStatusCode(302).end();
+            } else {
+
+                res.cause().printStackTrace();
+            }
+
+        });
+    }
 }

@@ -22,7 +22,13 @@
                         ${(label.name)!""}
                         </td>
                         <td>
-                            <a href="label/edit/labelId=${(label.id)!id}" rel="link">Edit</a>
+                            <a href="/label/edit/${(label.id)!id}" rel="link">Edit</a>
+                            <#--<a href="http://localhost:8085/modify?labelId=${(label.id)!id}" rel="link">Edit</a>-->
+
+                        </td>
+                        <td>
+                            <a href="/label/delete/${(label.id)!id}" rel="link">Delete</a>
+                            <#--<a href="http://localhost:8085/modify?labelId=${(label.id)!id}" rel="link">Edit</a>-->
 
                         </td>
                     </tr>
