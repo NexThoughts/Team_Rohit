@@ -1,5 +1,6 @@
 package com.todo.app.server.label
 
+import com.todo.app.model.Label
 import com.todo.app.util.BaseUtil
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.http.HttpHeaders
@@ -32,9 +33,17 @@ class LabelVerticle extends AbstractVerticle {
 
 
     void list(RoutingContext ctx) {
+        ctx.put("title", "Label")
+        ctx.put("name", "Label List")
+        JsonArray array = new JsonArray()
+        List<Label> labelList = []
         JsonObject query = new JsonObject()
         mongoClient.find(DEFAULT_COLLECTION, query, { response ->
             if (response.succeeded()) {
+                for (JsonObject label : response.result()) {
+                    labelList.add(new Label(label))
+                }
+                ctx.put("labelList", labelList)
                 engine.render(ctx, "templates/label/list", { res ->
                     if (res.succeeded()) {
                         ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
@@ -44,6 +53,7 @@ class LabelVerticle extends AbstractVerticle {
                 })
             }
         })
+
     }
 
     void add(RoutingContext ctx) {
