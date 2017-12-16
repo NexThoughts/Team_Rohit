@@ -47,6 +47,7 @@ class Startupverticle extends AbstractVerticle {
         if(ctx.session()){
             BaseUtil.isSession = Boolean.FALSE
         }
+        ctx.response().putHeader("location", "/").setStatusCode(302).end();
     }
 
     void doLogin(RoutingContext ctx) {
@@ -63,7 +64,14 @@ class Startupverticle extends AbstractVerticle {
                 Session session = ctx.session();
                 session.put("user", user);
                 BaseUtil.isSession = true
-                ctx.response().putHeader("location", "/").setStatusCode(302).end();
+                engine.render(ctx, "templates/label/list", { result ->
+                    if (result.succeeded()) {
+                        ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(result.result())
+                    } else {
+                        ctx.fail(result.cause())
+                    }
+                })
+//                ctx.response().putHeader("location", "/").setStatusCode(302).end();
             } else {
                 println "===============A" +
                         "uthentication not provided====================="

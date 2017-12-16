@@ -38,6 +38,13 @@ class ProjectVerticle extends AbstractVerticle {
 
 
     void list(RoutingContext ctx) {
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
         ctx.put("title", "Project")
         ctx.put("name", "Project List")
         JsonArray array = new JsonArray()
@@ -62,6 +69,13 @@ class ProjectVerticle extends AbstractVerticle {
     }
 
     void add(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
         JsonObject query = new JsonObject()
         mongoClient.find(DEFAULT_COLLECTION, query, { response ->
             if (response.succeeded()) {
@@ -79,6 +93,14 @@ class ProjectVerticle extends AbstractVerticle {
     }
 
     void save(RoutingContext ctx) {
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         println "111111111111111111111111111"
         println "========Going to save project=============" + ctx.request().getFormAttribute("name")
         JsonObject project = new JsonObject().put("name", ctx.request().getFormAttribute("name"))
@@ -98,7 +120,10 @@ class ProjectVerticle extends AbstractVerticle {
     void edit(RoutingContext ctx) {
         List<User> users = []
 
-
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
         println "==========Editing the Project===================="
         println "==========Editing the Project====================" + ctx.request().getParam("projectId")
         String projectId = ctx.request().getParam("projectId")
@@ -141,6 +166,13 @@ class ProjectVerticle extends AbstractVerticle {
     }
 
     void update(RoutingContext ctx) {
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         println "==========Editing the Project===================="
         println "==========Editing the Project====================" + ctx.request().getParam("projectId")
         String projectId = ctx.request().getParam("projectId")
@@ -174,6 +206,13 @@ class ProjectVerticle extends AbstractVerticle {
 
 
     void delete(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
         println "==========Deleting the Project===================="
         String projectId = ctx.request().getParam("projectId")
         println "projectId   " + projectId
@@ -193,6 +232,14 @@ class ProjectVerticle extends AbstractVerticle {
 
 
     void manage(RoutingContext ctx) {
+
+
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
 //        Session session = ctx.session()
 //        User user = session.get("user")
         String projectId = ctx.request().getParam("projectId")
@@ -239,6 +286,14 @@ class ProjectVerticle extends AbstractVerticle {
     }
 
     void createTask(RoutingContext ctx) {
+
+
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
         println "111111111111111111111111111"
         println "========Going to save task=============" + ctx.request().getFormAttribute("name")
         println "========Going to save projectId=============" + ctx.request().getFormAttribute("projectId")
