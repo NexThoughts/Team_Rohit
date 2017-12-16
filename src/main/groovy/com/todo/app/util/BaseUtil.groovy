@@ -1,10 +1,14 @@
 package com.todo.app.util
 
+import com.todo.app.model.Label
 import io.vertx.core.AbstractVerticle
+import io.vertx.core.http.HttpHeaders
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.mongo.MongoAuth
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.Router
+import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.templ.FreeMarkerTemplateEngine
 
@@ -22,6 +26,7 @@ class BaseUtil extends AbstractVerticle {
     public static TASK_COLLECTION = 'task'
     public static PROJECT_COLLECTION = 'project'
     public static USER_COLLECTION = 'user'
+    private static JsonObject DEFAULT_QUERY = new JsonObject()
 
 
     void start() {
@@ -64,6 +69,30 @@ class BaseUtil extends AbstractVerticle {
 
             }
         });
+    }
+
+    static void listCollections(String collection , RoutingContext ctx , String templateName , String keyname , String titleName , String titleListName) {
+        List collectionList = []
+        mongoClient.find(collection, DEFAULT_QUERY, { response ->
+            if (response.succeeded()) {
+                for (JsonObject object : response.result()) {
+                    collectionList.add(new Label(object))
+                }
+                println "collectionList Size"+collectionList?.size()
+                ctx.put(keyname, collectionList)
+                ctx.put("title", titleName)
+                ctx.put("name", titleListName)
+                if(collectionList?.size() > 0){
+                    engine.render(ctx, templateName, { res ->
+                        if (res.succeeded()) {
+                            ctx.response().putHeader("location", templateName).setStatusCode(302).end();
+                        } else {
+                            ctx.fail(res.cause())
+                        }
+                    })
+                }
+            }
+        })
     }
 
 

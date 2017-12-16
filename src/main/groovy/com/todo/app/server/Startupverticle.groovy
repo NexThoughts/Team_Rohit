@@ -12,6 +12,7 @@ class Startupverticle extends AbstractVerticle {
     Router router = BaseUtil.router
     def mongoClient = BaseUtil.mongoClient
     def mongoAuth = BaseUtil.mongoAuth
+    def engine = BaseUtil.engine
 
     void start() {
         println "Hello Hurrah Started well!!!!!"
@@ -33,6 +34,7 @@ class Startupverticle extends AbstractVerticle {
         })
         router.post("/login").handler(this.&doLogin)
         router.post("/signup").handler(this.&doSignup)
+        router.get("/projects/list").handler(this.&listProjects)
         vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
     }
 
@@ -68,4 +70,7 @@ class Startupverticle extends AbstractVerticle {
 
     }
 
+    void listProjects(RoutingContext ctx){
+        BaseUtil.listCollections("user" ,ctx , "templates/label/list" , "labelList" ,"Label","Label List")
+    }
 }
