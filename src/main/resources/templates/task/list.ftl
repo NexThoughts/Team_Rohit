@@ -8,21 +8,21 @@
         <table class="table" id="customers">
             <thead>
             <tr>
-                <th scope="col">Label Name</th>
+                <th scope="col">task Name</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-                <#list context.labelList>
-                    <#items as label>
+                <#list context.taskList>
+                    <#items as task>
 
                     <tr>
                         <td>
                         <#--${label.getString("_id")}-->
-                        ${(label.name)!""}
+                        ${(task.name)!""}
                         </td>
                         <td>
-                            <a href="label/edit/labelId=${(label.id)!id}" rel="link">Edit</a>
+                            <a href="label/edit/taskId=${(task._id)!id}" rel="link">Edit</a>
 
                         </td>
                     </tr>
