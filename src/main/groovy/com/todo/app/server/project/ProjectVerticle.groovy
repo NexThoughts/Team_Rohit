@@ -1,6 +1,5 @@
 package com.todo.app.server.project
 
-import com.todo.app.model.Label
 import com.todo.app.model.Project
 import com.todo.app.model.Task
 import com.todo.app.model.User
@@ -11,7 +10,6 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
-import io.vertx.ext.web.Session
 import io.vertx.ext.web.templ.FreeMarkerTemplateEngine
 
 class ProjectVerticle extends AbstractVerticle {
@@ -117,10 +115,10 @@ class ProjectVerticle extends AbstractVerticle {
                         for (JsonObject user : uResp.result()) {
                             users.add(new User(user))
                         }
-                        ctx.put("users",users)
+                        ctx.put("users", users)
                     }
 
-                    println("########################"+users*.id)
+                    println("########################" + users*.id)
                     engine.render(ctx, "templates/project/edit", { response ->
                         if (response.succeeded()) {
                             ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(response.result())
@@ -141,10 +139,24 @@ class ProjectVerticle extends AbstractVerticle {
     }
 
     void update(RoutingContext ctx) {
+        println("" + ctx.request().getFormAttribute("projectId"))
+
+        JsonObject query = new JsonObject().put("_id", ctx.request().getFormAttribute("projectId"));
+        def update = [
+                $set: [
+                        name: ctx.request().getFormAttribute("name")
+                ]
+        ]
+        mongoClient.update(BaseUtil.PROJECT_COLLECTION, query, update, { res ->
+            if (res.succeeded()) {
+                System.out.println("Book updated !");
+            } else {
+                res.cause().printStackTrace();
+            }
+        })
+        String projectId = ctx.request().getFormAttribute("projectId")
         println "==========Editing the Project===================="
         println "==========Editing the Project====================" + ctx.request().getParam("projectId")
-        String projectId = ctx.request().getParam("projectId")
-        JsonObject query = new JsonObject().put("_id", projectId)
         mongoClient.find(DEFAULT_COLLECTION, query, { res ->
             if (res.succeeded()) {
                 for (JsonObject json : res.result()) {
@@ -162,7 +174,7 @@ class ProjectVerticle extends AbstractVerticle {
 
         })
 
-        engine.render(ctx, "templates/project/edit", { res ->
+        engine.render(ctx, "templates/project/list", { res ->
             if (res.succeeded()) {
                 ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
             } else {

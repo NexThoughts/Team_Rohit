@@ -4,7 +4,8 @@ import com.todo.app.server.Startupverticle
 import com.todo.app.server.bootstrap.BootstrapVerticle
 import com.todo.app.server.comment.CommentVerticle
 import com.todo.app.server.label.LabelVerticle
-import com.todo.app.server.mail.MailVerticle
+import com.todo.app.server.project.ProjectVerticle
+import com.todo.app.server.task.TaskVerticle
 import com.todo.app.util.BaseUtil
 import io.vertx.core.Vertx
 
@@ -16,10 +17,9 @@ class WebServer {
         vertx.deployVerticle(new BootstrapVerticle())
         Thread.sleep(3000);
         vertx.deployVerticle(new Startupverticle())
-//        vertx.deployVerticle(new LabelVerticle())
+        vertx.deployVerticle(new LabelVerticle())
         Thread.sleep(3000);
         vertx.deployVerticle(new CommentVerticle())
-        vertx.deployVerticle(new MailVerticle())
         Thread.sleep(3000);
 
     }
