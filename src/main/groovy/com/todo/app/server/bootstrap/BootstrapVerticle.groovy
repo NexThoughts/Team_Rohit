@@ -1,6 +1,7 @@
 package com.todo.app.server.bootstrap
 
 import com.todo.app.server.Startupverticle
+import com.todo.app.util.BaseUtil
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.json.JsonObject
 
@@ -9,15 +10,37 @@ class BootstrapVerticle extends AbstractVerticle{
     private static final MAIL_CLIENT = "@gmail.com"
     private static final DEFAULT_PASSWORD = "user_"
     JsonObject authInfo = null
+    private static  mongoAuth = BaseUtil.mongoAuth
 
 
     public void start(){
-        String container = null
+        println "===================In the bootstrap================="
+
+        String container = null , psssword = null
+        authInfo = new JsonObject()
+        List <String> user_role = ['ROLE_USER']
         (1..10).each {index ->
             container = randomIdentifier()+MAIL_CLIENT
-            authInfo.put("username",container)
-            authInfo.put("password",DEFAULT_PASSWORD+${it})
-
+            psssword = DEFAULT_PASSWORD+index
+            mongoAuth.insertUser(container , psssword , user_role , null , {result->
+                if(result.succeeded()){
+                    println "================ User Signup done==============="+result.result()
+                }else{
+                    println "===========User signup not done==========="
+                }
+            })
+        }
+        List <String> admin_role = ['ROLE_ADMIN']
+        (1..2)?.reverse?.each {index ->
+            container = randomIdentifier()+MAIL_CLIENT
+            psssword = DEFAULT_PASSWORD+index
+            mongoAuth.insertUser(container , psssword , admin_role , null , {result->
+                if(result.succeeded()){
+                    println "================ Admin Signup done==============="+result.result()
+                }else{
+                    println "===========User signup not done==========="
+                }
+            })
         }
     }
     public String randomIdentifier() {
