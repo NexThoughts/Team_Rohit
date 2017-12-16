@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-sm-5">
                 <label>Comment Name</label>
-                <input type="text" class="form-control" id="name" name="name"/>
+                <input type="text" class="form-control" id="description" name="description"/>
             </div>
         </div>
         <div class="row">
