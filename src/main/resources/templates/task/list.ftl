@@ -4,7 +4,7 @@
     <header class="main-box-header clearfix">
 
         <span style="float: right">
-            <a href="/label/add" class="create btn btn-large btn-primary" rel="link">Add</a>
+            <a href="/task/add" class="create btn btn-large btn-primary" rel="link">Add</a>
         </span>
     </header>
     <div class="col-sm-3">
@@ -14,27 +14,29 @@
         <table class="table" id="customers">
             <thead>
             <tr>
-                <th scope="col">Label Name</th>
+                <th scope="col">Task Name</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-                <#list context.labelList>
-                    <#items as label>
+                <#list context.taskList>
+                    <#items as task>
 
                     <tr>
                         <td>
-                        <#--${label.getString("_id")}-->
-                        ${(label.name)!""}
+                        <#--${task.getString("_id")}-->
+                        ${(task.name)!""}
                         </td>
                         <td>
-                            <a href="/label/edit/${(label.id)!id}" rel="link">Edit</a>
-                            <#--<a href="http://localhost:8085/modify?labelId=${(label.id)!id}" rel="link">Edit</a>-->
+                            <a href="/task/edit/${(task.id)!id}" rel="link">Edit</a>
 
                         </td>
                         <td>
-                            <a href="/label/delete/${(label.id)!id}" rel="link">Delete</a>
-                            <#--<a href="http://localhost:8085/modify?labelId=${(label.id)!id}" rel="link">Edit</a>-->
+                            <a href="/task/delete/${(task.id)!id}" rel="link">Delete</a>
+
+                        </td>
+                        <td>
+                            <a href="/task/manage/${(task.id)!id}" class="create btn btn-large btn-primary" rel="link">Manage</a>
 
                         </td>
                     </tr>

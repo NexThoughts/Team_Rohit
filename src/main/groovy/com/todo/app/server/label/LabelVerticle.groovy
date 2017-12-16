@@ -109,6 +109,13 @@ class LabelVerticle extends AbstractVerticle {
                     ctx.put("labelName", label?.name)
                     ctx.put("labelId", label?.id)
                 }
+                engine.render(ctx, "templates/label/edit", { engRes ->
+                    if (engRes.succeeded()) {
+                        ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(engRes.result())
+                    } else {
+                        ctx.fail(engRes.cause())
+                    }
+                })
 
             } else {
                 res.cause().printStackTrace();
@@ -117,13 +124,6 @@ class LabelVerticle extends AbstractVerticle {
 
         })
 
-        engine.render(ctx, "templates/label/edit", { res ->
-            if (res.succeeded()) {
-                ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
-            } else {
-                ctx.fail(res.cause())
-            }
-        })
 
     }
 

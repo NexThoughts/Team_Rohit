@@ -2,9 +2,11 @@ package com.todo.app.model
 
 import com.todo.app.co.TaskCo
 import com.todo.app.enums.Enums
+import io.vertx.core.json.JsonObject
 
 public class Task {
     String name
+    String id
     String _id = UUID.randomUUID().toString()
     String projectId //to be replaced by project class's object
     String createdBy //to be replaced with user class object
@@ -17,6 +19,10 @@ public class Task {
 
 
     public Task() {}
+    Task(JsonObject task) {
+        this.id = task.getString("_id")
+        this.name = task.getString("name")
+    }
     public Task (TaskCo taskCo) {
         name = taskCo.name
         projectId = taskCo.projectId
