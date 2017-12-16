@@ -23,29 +23,33 @@ class MailVerticle extends AbstractVerticle {
         config.setUsername("rohit@fintechlabs.in");
         config.setPassword("team_rohit");
 
-        MailClient mailClient = MailClient.createNonShared(vertx, config);
+        vertx.setTimer(30000, {id ->
+
+            MailClient mailClient = MailClient.createNonShared(vertx, config);
 
 
-        MailMessage message = new MailMessage();
-        String sendTo = ""
-        vertx.eventBus().consumer("singup" , new Handler<Message<String>>() {
-            @Override
-            void handle(Message<String> event) {
-                System.out.println("received message: " + event.body());
-                sendTo = event.body()
-                message.setFrom("rohit@fintechlabs.in");
-                message.setTo(sendTo);
-                message.setSubject("Greetings from Team Fintechlabs");
-                //message.setText("this is the plain message text");
-                message.setHtml(HtmlUtil.mailHtml.replaceAll("@@@USERNAME@@@",sendTo.split("@")[0]));
-                mailClient.sendMail(message, { result ->
-                    if (result.succeeded()) {
-                        System.out.println(result.result());
-                    } else {
-                        result.cause().printStackTrace();
-                    }
-                });
-            }
+            MailMessage message = new MailMessage();
+            String sendTo = ""
+            vertx.eventBus().consumer("singup" , new Handler<Message<String>>() {
+                @Override
+                void handle(Message<String> event) {
+                    System.out.println("received message: " + event.body());
+                    sendTo = event.body()
+                    message.setFrom("rohit@fintechlabs.in");
+                    message.setTo(sendTo);
+                    message.setSubject("Greetings from Team Fintechlabs");
+                    //message.setText("this is the plain message text");
+                    message.setHtml(HtmlUtil.mailHtml.replaceAll("@@@USERNAME@@@",sendTo.split("@")[0]));
+                    mailClient.sendMail(message, { result ->
+                        if (result.succeeded()) {
+                            System.out.println(result.result());
+                        } else {
+                            result.cause().printStackTrace();
+                        }
+                    });
+                }
+            });
+
         });
 
         /*message.setFrom("rohit@fintechlabs.in");
