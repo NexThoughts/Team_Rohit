@@ -17,6 +17,11 @@ class BaseUtil extends AbstractVerticle {
 
     private final static String DEFAULT_DATABASE = "todo"
     private final static String DEFAULT_MONGO_URL = "mongodb://localhost:27017"
+    public static COMMENT_COLLECTION = 'comment'
+    public static TASK_COLLECTION = 'comment'
+    public static PROJECT_COLLECTION = 'comment'
+    public static USER_COLLECTION = 'user'
+
 
     void start() {
         JsonObject mongoClientConfig = new JsonObject()
@@ -27,5 +32,6 @@ class BaseUtil extends AbstractVerticle {
         router =  Router.router(vertx)
         router.route().handler(BodyHandler.create())
     }
+
 
 }
