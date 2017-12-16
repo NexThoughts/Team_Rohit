@@ -13,16 +13,16 @@
             </tr>
             </thead>
             <tbody>
-                <#list context.labelList>
-                    <#items as label>
+                <#list context.commentList>
+                    <#items as comment>
 
                     <tr>
                         <td>
                         <#--${label.getString("_id")}-->
-                        ${(label.name)!""}
+                        ${(comment.name)!"qqqqqq"}
                         </td>
                         <td>
-                            <a href="label/edit/labelId=${(label.id)!id}" rel="link">Edit</a>
+                            <a href="/comment/edit/${(comment.id)!""}" rel="link">Edit</a>
 
                         </td>
                     </tr>
