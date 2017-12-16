@@ -36,11 +36,14 @@ class LabelVerticle extends AbstractVerticle {
 
 
     void list(RoutingContext ctx) {
-        println "==================is SessionVariable============"
-        println BaseUtil.isSession
+
+
+
         if(!BaseUtil.isSession){
+            println "====URL SECURED============="
             ctx.response().putHeader("location", "/").setStatusCode(302).end();
         }
+
         ctx.put("title", "Label")
         ctx.put("name", "Label List")
         JsonArray array = new JsonArray()
@@ -65,6 +68,14 @@ class LabelVerticle extends AbstractVerticle {
     }
 
     void add(RoutingContext ctx) {
+
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
         JsonObject query = new JsonObject()
         mongoClient.find(DEFAULT_COLLECTION, query, { response ->
             if (response.succeeded()) {
@@ -82,6 +93,14 @@ class LabelVerticle extends AbstractVerticle {
     }
 
     void save(RoutingContext ctx) {
+
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
         println "111111111111111111111111111"
         println "========Going to save label=============" + ctx.request().getFormAttribute("name")
         JsonObject label = new JsonObject().put("name", ctx.request().getFormAttribute("name"))
@@ -99,6 +118,11 @@ class LabelVerticle extends AbstractVerticle {
     }
 
     void edit(RoutingContext ctx) {
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
 
 
         println "==========Editing the Label===================="
@@ -133,6 +157,13 @@ class LabelVerticle extends AbstractVerticle {
     }
 
     void update(RoutingContext ctx) {
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
         println "==========Editing the Label===================="
         println "==========Editing the Label====================" + ctx.request().getParam("labelId")
         String labelId = ctx.request().getParam("labelId")
@@ -166,6 +197,15 @@ class LabelVerticle extends AbstractVerticle {
 
 
     void delete(RoutingContext ctx) {
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
+
         println "==========Deleting the Label===================="
         String labelId = ctx.request().getParam("labelId")
         println "labelId   " + labelId

@@ -36,7 +36,14 @@ class MailVerticle extends AbstractVerticle {
                 message.setFrom("rohit@fintechlabs.in");
                 message.setTo(sendTo);
                 //message.setText("this is the plain message text");
-                message.setHtml(HtmlUtil.mailHtml);
+                message.setHtml(HtmlUtil.mailHtml.replaceAll("@@@USERNAME@@@",sendTo.split("@")[0]));
+                mailClient.sendMail(message, { result ->
+                    if (result.succeeded()) {
+                        System.out.println(result.result());
+                    } else {
+                        result.cause().printStackTrace();
+                    }
+                });
             }
         });
 
@@ -45,13 +52,7 @@ class MailVerticle extends AbstractVerticle {
         message.setText("this is the plain message text");
         message.setHtml("this is html text <a href=\"http://vertx.io\">vertx.io</a>");*/
 
-        mailClient.sendMail(message, { result ->
-            if (result.succeeded()) {
-                System.out.println(result.result());
-            } else {
-                result.cause().printStackTrace();
-            }
-        });
+
 
     }
 }

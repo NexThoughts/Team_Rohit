@@ -41,6 +41,15 @@ class CommentVerticle extends AbstractVerticle {
     }
 
     void list(RoutingContext ctx) {
+
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
         ctx.put("title", "Comment")
         ctx.put("name", "Comment List")
         JsonArray array = new JsonArray()
@@ -66,6 +75,16 @@ class CommentVerticle extends AbstractVerticle {
 
 
     public void saveComment(RoutingContext ctx) {
+
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         println "========Going to save book============="
         println "asdsadasdasdasdsadasd" + ctx.request().getParam("description")
         println "QQQQQQQQQQQQQQQQQQQQQQQ" + ctx.request().getFormAttribute("description")
@@ -83,6 +102,14 @@ class CommentVerticle extends AbstractVerticle {
     }
 
     void update(RoutingContext ctx) {
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         println "==========Editing the Label====================" + ctx.request().getParam("commentId")
         String labelId = ctx.request().getParam("commentId")
         JsonObject query = new JsonObject().put("_id", labelId)
@@ -115,6 +142,15 @@ class CommentVerticle extends AbstractVerticle {
 
 
     void add(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         JsonObject query = new JsonObject()
         mongoClient.find(BaseUtil.COMMENT_COLLECTION, query, { response ->
             if (response.succeeded()) {
@@ -132,6 +168,15 @@ class CommentVerticle extends AbstractVerticle {
     }
 
     void edit(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         String commentID = ctx.request().getParam("commentID")
         ctx.put("title", "Book Info")
         ctx.put("name", "Book Info")

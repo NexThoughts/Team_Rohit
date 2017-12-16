@@ -104,7 +104,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Password</label>
-                        <input type="text" class="form-control" id="password" name="password"/>
+                        <input type="password" class="form-control" id="password" name="password"/>
                     </div>
                 </div>
                 <div class="row">
@@ -128,7 +128,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Password</label>
-                        <input type="text" class="form-control" id="password" name="password"/>
+                        <input type="password" class="form-control" id="password" name="password"/>
                     </div>
                 </div>
                 <div class="row">
@@ -139,7 +139,7 @@
                 </div>
                 <div class="row">
                     <div class="button col-sm-12">
-                        <button type="submit" class="btn btn-primary" style="margin-top:4%;margin-left:14%;">Login</button>
+                        <button type="submit" class="btn btn-primary" style="margin-top:4%;margin-left:14%;">signUp</button>
                     </div>
                 </div>
             </div>
