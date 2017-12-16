@@ -46,7 +46,6 @@ class Startupverticle extends AbstractVerticle {
     void doLogout(RoutingContext ctx){
         if(ctx.session()){
             BaseUtil.isSession = Boolean.FALSE
-
         }
     }
 
