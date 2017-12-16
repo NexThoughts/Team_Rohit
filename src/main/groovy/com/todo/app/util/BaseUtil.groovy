@@ -46,6 +46,7 @@ class BaseUtil extends AbstractVerticle {
         mongoAuth.insertUser(user?.getString("username"), user?.getString("password") , roles , null , {result->
             if(result.succeeded()){
                 println "================ User Signup done==============="+result.result()
+                vertx.eventBus().send ("singup", user.getString("username"));
                 return  true
             }else{
                 println "===========User signup not done==========="

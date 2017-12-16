@@ -55,11 +55,11 @@
 <div class="row">
 <#include "header.ftl">
 </div>
-<div class="row">
+<div class="row" >
     <div class="col-sm-3">
 
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6" style="height:550px;">
     <#nested>
     </div>
     <div class="col-sm-3">
