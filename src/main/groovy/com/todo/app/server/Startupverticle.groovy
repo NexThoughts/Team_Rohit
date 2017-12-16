@@ -69,6 +69,7 @@ class Startupverticle extends AbstractVerticle {
             } else {
                 println "===============A" +
                         "uthentication not provided====================="
+                ctx.response().putHeader("location", "/").setStatusCode(302).end();
             }
         })
     }
