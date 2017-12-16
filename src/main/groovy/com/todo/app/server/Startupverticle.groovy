@@ -62,7 +62,7 @@ class Startupverticle extends AbstractVerticle {
         authInfo.put("username", ctx.request().getFormAttribute("username"))
         authInfo.put("password", ctx.request().getFormAttribute("password"))
         authInfo.put("name", ctx.request().getFormAttribute("name"))
-        if (BaseUtil.doSignup(authInfo)) {
+        if (BaseUtil.doSignup(authInfo, vertx)) {
 
         } else {
             ctx.response().putHeader("location", "/").setStatusCode(302).end();

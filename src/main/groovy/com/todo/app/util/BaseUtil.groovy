@@ -11,6 +11,7 @@ import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.templ.FreeMarkerTemplateEngine
+import sun.security.provider.certpath.Vertex
 
 class BaseUtil extends AbstractVerticle {
 
@@ -39,7 +40,7 @@ class BaseUtil extends AbstractVerticle {
         router.route().handler(BodyHandler.create())
     }
 
-    static Boolean doSignup(JsonObject user){
+    static Boolean doSignup(JsonObject user, io.vertx.core.Vertx vertx){
         println user
         if(!user)
             return;
