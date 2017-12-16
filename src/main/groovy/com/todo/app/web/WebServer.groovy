@@ -18,14 +18,13 @@ class WebServer {
         vertx.deployVerticle(new BootstrapVerticle())
         Thread.sleep(3000);
         vertx.deployVerticle(new Startupverticle())
-//        vertx.deployVerticle(new LabelVerticle())
+       vertx.deployVerticle(new LabelVerticle())
         Thread.sleep(3000);
         vertx.deployVerticle(new CommentVerticle())
+        Thread.sleep(3000);
         vertx.deployVerticle(new MailVerticle())
         vertx.deployVerticle(new ProjectVerticle())
         vertx.deployVerticle(new TaskVerticle())
         vertx.deployVerticle(new LabelVerticle())
-        Thread.sleep(3000);
-
     }
 }
