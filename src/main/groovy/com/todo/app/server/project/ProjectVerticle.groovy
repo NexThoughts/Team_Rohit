@@ -2,6 +2,8 @@ package com.todo.app.server.project
 
 import com.todo.app.model.Label
 import com.todo.app.model.Project
+import com.todo.app.model.Task
+import com.todo.app.model.User
 import com.todo.app.util.BaseUtil
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.http.HttpHeaders
@@ -9,6 +11,7 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
+import io.vertx.ext.web.Session
 import io.vertx.ext.web.templ.FreeMarkerTemplateEngine
 
 class ProjectVerticle extends AbstractVerticle {
@@ -179,6 +182,8 @@ class ProjectVerticle extends AbstractVerticle {
 
 
     void manage(RoutingContext ctx) {
+//        Session session = ctx.session()
+//        User user = session.get("user")
         String projectId = ctx.request().getParam("projectId")
         ctx.put("title", "Label")
         ctx.put("name", "Label List")
@@ -186,7 +191,7 @@ class ProjectVerticle extends AbstractVerticle {
         println "projectId  " + projectId
         println "projectId  " + projectId
         println "projectId  " + projectId
-        List<Label> labelList = []
+        List<Task> taskList = []
         JsonObject query = new JsonObject().put("_id", projectId)
         Project project = null
         mongoClient.find(DEFAULT_COLLECTION, query, { res ->
@@ -196,15 +201,13 @@ class ProjectVerticle extends AbstractVerticle {
                     project = new Project(json)
                     ctx.put("project", project)
                 }
-
-                println "project name   " + project?.name
-                println "project id   " + project?.id
                 query = new JsonObject().put("_id", projectId)
-                mongoClient.find("label", query, { response ->
+                mongoClient.find("task", query, { response ->
                     if (response.succeeded()) {
-                        for (JsonObject label : response.result()) {
-                            labelList.add(new Label(label))
+                        for (JsonObject task : response.result()) {
+                            taskList.add(new Task(task))
                         }
+                        ctx.put("taskList", taskList)
                         engine.render(ctx, "templates/project/manage", { engRes ->
                             if (engRes.succeeded()) {
                                 ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(engRes.result())
@@ -221,6 +224,24 @@ class ProjectVerticle extends AbstractVerticle {
             }
 
         })
+
+    }
+
+    void createTask(RoutingContext ctx) {
+        println "111111111111111111111111111"
+        println "========Going to save task=============" + ctx.request().getFormAttribute("name")
+        println "========Going to save projectId=============" + ctx.request().getFormAttribute("projectId")
+        JsonObject task = new JsonObject().put("name", ctx.request().getFormAttribute("name"))
+        task.put("uuid", UUID.randomUUID().toString())
+        mongoClient.save(DEFAULT_COLLECTION, task, { res ->
+            if (res.succeeded()) {
+                String id = res.result();
+                System.out.println("Saved Task With Id" + id);
+                ctx.response().putHeader("location", "/task/list").setStatusCode(302).end();
+            } else {
+                res.cause().printStackTrace();
+            }
+        });
 
     }
 }
