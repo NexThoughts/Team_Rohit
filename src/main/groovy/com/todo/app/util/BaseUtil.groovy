@@ -2,6 +2,7 @@ package com.todo.app.util
 
 import com.todo.app.model.Label
 import io.vertx.core.AbstractVerticle
+import io.vertx.core.Vertx
 import io.vertx.core.http.HttpHeaders
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
@@ -10,6 +11,9 @@ import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.ext.web.handler.CookieHandler
+import io.vertx.ext.web.handler.SessionHandler
+import io.vertx.ext.web.sstore.LocalSessionStore
 import io.vertx.ext.web.templ.FreeMarkerTemplateEngine
 import sun.security.provider.certpath.Vertex
 
@@ -28,6 +32,7 @@ class BaseUtil extends AbstractVerticle {
     public static PROJECT_COLLECTION = 'project'
     public static USER_COLLECTION = 'user'
     private static JsonObject DEFAULT_QUERY = new JsonObject()
+    public static Boolean isSession = Boolean.FALSE
 
 
     void start() {
@@ -38,7 +43,11 @@ class BaseUtil extends AbstractVerticle {
         mongoAuth = MongoAuth.create(mongoClient,new JsonObject())
         router =  Router.router(vertx)
         router.route().handler(BodyHandler.create())
+        router.route().handler(CookieHandler.create())
+        router.route().handler(SessionHandler.create(LocalSessionStore.create(vertx)).setCookieHttpOnlyFlag(true).setCookieSecureFlag(true))
+
     }
+
 
     static Boolean doSignup(JsonObject user, io.vertx.core.Vertx vertx){
         println user
@@ -48,6 +57,7 @@ class BaseUtil extends AbstractVerticle {
             if(result.succeeded()){
                 println "================ User Signup done==============="+result.result()
                 vertx.eventBus().send ("singup", user.getString("username"));
+                isSession = true
                 return  true
             }else{
                 println "===========User signup not done==========="

@@ -4,8 +4,14 @@ import com.todo.app.util.BaseUtil
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.http.HttpHeaders
 import io.vertx.core.json.JsonObject
+import io.vertx.ext.auth.User
+import io.vertx.ext.auth.mongo.MongoAuth
+import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
+import io.vertx.ext.web.Session
+import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.ext.web.templ.FreeMarkerTemplateEngine
 
 class Startupverticle extends AbstractVerticle {
 
@@ -18,8 +24,6 @@ class Startupverticle extends AbstractVerticle {
         println "Hello Hurrah Started well!!!!!"
 
         println "Got the mongo CLient" + BaseUtil.mongoClient
-
-
 
         router.get("/").handler({ ctx ->
             println "=========Landing Page================"
@@ -36,6 +40,13 @@ class Startupverticle extends AbstractVerticle {
         router.post("/signup").handler(this.&doSignup)
         router.get("/projects/list").handler(this.&listProjects)
         vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
+        router.get("/logout").handler(this.&doLogout)
+    }
+
+    void doLogout(RoutingContext ctx){
+        if(ctx.session()){
+            BaseUtil.isSession = Boolean.FALSE
+        }
     }
 
     void doLogin(RoutingContext ctx) {
@@ -48,6 +59,10 @@ class Startupverticle extends AbstractVerticle {
         mongoAuth.authenticate(authInfo, { res ->
             if (res.succeeded()) {
                 println "========================User Logged in================================"
+                User user = res.result()
+                Session session = ctx.session();
+                session.put("user", user);
+                BaseUtil.isSession = true
                 ctx.response().putHeader("location", "/").setStatusCode(302).end();
             } else {
                 println "===============A" +

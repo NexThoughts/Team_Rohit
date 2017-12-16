@@ -1,12 +1,11 @@
 <#import "../layout/layout.ftl" as layout>
 <@layout.myLayout>
-<form action="/task/update" method="post" class="form-center">
+<form action="/project/save" method="post" class="form-center">
     <div class="form-border">
         <div class="row">
             <div class="col-sm-5">
-                <label>Task Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="${(context.taskName)!"Task"}"/>
-                <input type="hidden" class="form-control" id="taskId" name="taskId" value="${(context.taskId)!""}"/>
+                <label>Project Name</label>
+                <input type="text" class="form-control" id="name" name="name"/>
             </div>
         </div>
         <div class="row">
