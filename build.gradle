@@ -1,0 +1,42 @@
+group 'hackathon_16_dec'
+version '1.0-SNAPSHOT'
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '3.1'
+  distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+sourceCompatibility = 1.5
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    //Add Vertx Web dependency
+    compile 'io.vertx:vertx-web:3.5.0'
+
+
+    //Template Dependency
+    compile 'io.vertx:vertx-web-templ-freemarker:3.5.0'
+
+
+    //MongoDbClient
+    compile 'io.vertx:vertx-mongo-client:3.5.0'
+    compile fileTree(dir: 'lib', include: '*.jar')
+
+
+    compile 'io.vertx:vertx-mail-client:3.5.0'
+
+
+    compile 'io.vertx:vertx-jdbc-client:3.5.0'
+
+    //MONGO_AUTH_PROVIDER
+    compile 'io.vertx:vertx-auth-mongo:3.5.0'
+}
