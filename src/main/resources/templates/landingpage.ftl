@@ -104,7 +104,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Password</label>
-                        <input type="text" class="form-control" id="password" name="password"/>
+                        <input type="password" class="form-control" id="password" name="password"/>
                     </div>
                 </div>
                 <div class="row">
