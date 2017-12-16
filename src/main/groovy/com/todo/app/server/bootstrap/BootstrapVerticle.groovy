@@ -9,6 +9,7 @@ class BootstrapVerticle extends AbstractVerticle{
 
     private static final MAIL_CLIENT = "@gmail.com"
     private static final DEFAULT_PASSWORD = "user_"
+    private def mongoClient = BaseUtil.mongoClient
     JsonObject authInfo = null
     private static  mongoAuth = BaseUtil.mongoAuth
 
@@ -16,32 +17,37 @@ class BootstrapVerticle extends AbstractVerticle{
     public void start(){
         println "===================In the bootstrap================="
 
-        String container = null , psssword = null
-        authInfo = new JsonObject()
-        List <String> user_role = ['ROLE_USER']
-        (1..10).each {index ->
-            container = randomIdentifier()+MAIL_CLIENT
-            psssword = DEFAULT_PASSWORD+index
-            mongoAuth.insertUser(container , psssword , user_role , null , {result->
-                if(result.succeeded()){
-                    println "================ User Signup done==============="+result.result()
-                }else{
-                    println "===========User signup not done==========="
-                }
-            })
-        }
-        List <String> admin_role = ['ROLE_ADMIN']
-        (1..2)?.reverse?.each {index ->
-            container = randomIdentifier()+MAIL_CLIENT
-            psssword = DEFAULT_PASSWORD+index
-            mongoAuth.insertUser(container , psssword , admin_role , null , {result->
-                if(result.succeeded()){
-                    println "================ Admin Signup done==============="+result.result()
-                }else{
-                    println "===========User signup not done==========="
-                }
-            })
-        }
+        JsonObject query = new JsonObject().put("user", new JsonObject());
+//        if(getDocuments("user") == 0){
+            String container = null , psssword = null
+            authInfo = new JsonObject()
+            List <String> user_role = ['ROLE_USER']
+            (1..10).each {index ->
+                container = randomIdentifier()+MAIL_CLIENT
+                psssword = DEFAULT_PASSWORD+index
+                mongoAuth.insertUser(container , psssword , user_role , null , {result->
+                    if(result.succeeded()){
+                        println "================ User Signup done==============="+result.result()
+                    }else{
+                        println "===========User signup not done==========="
+                    }
+                })
+            }
+            List <String> admin_role = ['ROLE_ADMIN']
+            (1..2)?.reverse?.each {index ->
+                container = randomIdentifier()+MAIL_CLIENT
+                psssword = DEFAULT_PASSWORD+index
+                mongoAuth.insertUser(container , psssword , admin_role , null , {result->
+                    if(result.succeeded()){
+                        println "================ Admin Signup done==============="+result.result()
+                    }else{
+                        println "===========User signup not done==========="
+                    }
+                })
+            }
+//        }else{
+//            println "users already exist========================"
+//        }
     }
     public String randomIdentifier() {
         final Set<String> identifiers = new HashSet<String>();
@@ -58,5 +64,23 @@ class BootstrapVerticle extends AbstractVerticle{
             }
         }
         return builder.toString();
+    }
+
+    public long getDocuments(String collectionName){
+        println "COllection Name"+collectionName
+        JsonObject query = new JsonObject()
+        mongoClient.count(collectionName, query, {res ->
+
+            if (res.succeeded()) {
+
+                def num = res.result();
+                println num
+
+            } else {
+
+                res.cause().printStackTrace();
+
+            }
+        });
     }
 }
