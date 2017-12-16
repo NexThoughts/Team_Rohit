@@ -38,8 +38,7 @@ class LabelVerticle extends AbstractVerticle {
     void list(RoutingContext ctx) {
 
 
-
-        if(!BaseUtil.isSession){
+        if (!BaseUtil.isSession) {
             println "====URL SECURED============="
             ctx.response().putHeader("location", "/").setStatusCode(302).end();
         }
@@ -70,8 +69,7 @@ class LabelVerticle extends AbstractVerticle {
     void add(RoutingContext ctx) {
 
 
-
-        if(!BaseUtil.isSession){
+        if (!BaseUtil.isSession) {
             println "====URL SECURED============="
             ctx.response().putHeader("location", "/").setStatusCode(302).end();
         }
@@ -95,8 +93,7 @@ class LabelVerticle extends AbstractVerticle {
     void save(RoutingContext ctx) {
 
 
-
-        if(!BaseUtil.isSession){
+        if (!BaseUtil.isSession) {
             println "====URL SECURED============="
             ctx.response().putHeader("location", "/").setStatusCode(302).end();
         }
@@ -119,7 +116,7 @@ class LabelVerticle extends AbstractVerticle {
 
     void edit(RoutingContext ctx) {
 
-        if(!BaseUtil.isSession){
+        if (!BaseUtil.isSession) {
             println "====URL SECURED============="
             ctx.response().putHeader("location", "/").setStatusCode(302).end();
         }
@@ -158,7 +155,7 @@ class LabelVerticle extends AbstractVerticle {
 
     void update(RoutingContext ctx) {
 
-        if(!BaseUtil.isSession){
+        if (!BaseUtil.isSession) {
             println "====URL SECURED============="
             ctx.response().putHeader("location", "/").setStatusCode(302).end();
         }
@@ -166,39 +163,36 @@ class LabelVerticle extends AbstractVerticle {
 
         println "==========Editing the Label===================="
         println "==========Editing the Label====================" + ctx.request().getParam("labelId")
+        println "==========Editing the Label====================" + ctx.request().getParam("name")
         String labelId = ctx.request().getParam("labelId")
-        JsonObject query = new JsonObject().put("_id", labelId)
-        mongoClient.find(DEFAULT_COLLECTION, query, { res ->
-            if (res.succeeded()) {
-                for (JsonObject json : res.result()) {
-                    println "json  " + json
-                    Label label = new Label(json)
-                    ctx.put("label", label)
-                }
+//        JsonObject query = new JsonObject().put("_id", labelId)
+//        query.put("name", ctx.request().getParam("labelId"))
 
+
+        JsonObject query = new JsonObject().put("_id", labelId); // Set the author field
+        def update = [
+                $set: [
+                        name: ctx.request().getParam("name")
+                ]
+        ]
+        mongoClient.update("label", query, update, { res ->
+            if (res.succeeded()) {
+                System.out.println("Label updated !");
+                ctx.response().putHeader("location", "/label/list").setStatusCode(302).end();
 
             } else {
-
                 res.cause().printStackTrace();
-
             }
+        });
 
-        })
 
-        engine.render(ctx, "templates/label/edit", { res ->
-            if (res.succeeded()) {
-                ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
-            } else {
-                ctx.fail(res.cause())
-            }
-        })
 
     }
 
 
     void delete(RoutingContext ctx) {
 
-        if(!BaseUtil.isSession){
+        if (!BaseUtil.isSession) {
             println "====URL SECURED============="
             ctx.response().putHeader("location", "/").setStatusCode(302).end();
         }
