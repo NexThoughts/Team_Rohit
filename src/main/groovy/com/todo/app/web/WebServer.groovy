@@ -14,11 +14,10 @@ class WebServer {
         Vertx vertx = Vertx.vertx()
         vertx.deployVerticle(new BaseUtil())
         Thread.sleep(3000);
-//        vertx.deployVerticle(new BootstrapVerticle())
+        vertx.deployVerticle(new BootstrapVerticle())
         Thread.sleep(3000);
-        vertx.deployVerticle(new ProjectVerticle())
+        vertx.deployVerticle(new Startupverticle())
         vertx.deployVerticle(new LabelVerticle())
-        vertx.deployVerticle(new TaskVerticle())
         Thread.sleep(3000);
         vertx.deployVerticle(new CommentVerticle())
         Thread.sleep(3000);

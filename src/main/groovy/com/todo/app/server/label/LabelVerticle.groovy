@@ -36,6 +36,11 @@ class LabelVerticle extends AbstractVerticle {
 
 
     void list(RoutingContext ctx) {
+        println "==================is SessionVariable============"
+        println BaseUtil.isSession
+        if(!BaseUtil.isSession){
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
         ctx.put("title", "Label")
         ctx.put("name", "Label List")
         JsonArray array = new JsonArray()
