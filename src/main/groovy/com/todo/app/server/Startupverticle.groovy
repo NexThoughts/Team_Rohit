@@ -19,10 +19,7 @@ class Startupverticle extends AbstractVerticle{
 
         println "Got the mongo CLient"+BaseUtil.mongoClient
 
-        Router router = Router.router(vertx)
-
-        router.route().handler(BodyHandler.create())
-
+        Router router = BaseUtil.router
 
         router.get("/").handler({ ctx ->
             println "=========Landing Page================"
