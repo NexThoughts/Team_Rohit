@@ -1,6 +1,8 @@
 package com.todo.app.server
 
 import io.vertx.core.AbstractVerticle
+import io.vertx.core.http.HttpHeaders
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.MongoClient
 import io.vertx.ext.web.Router
@@ -30,6 +32,19 @@ class Startupverticle extends AbstractVerticle{
         Router router = Router.router(vertx)
 
         router.route().handler(BodyHandler.create())
+
+
+        router.get("/").handler({ ctx ->
+            println "=========Landing Page================"
+            ctx.put("title", "Todo")
+            engine.render(ctx, "templates/landingpage.ftl", { res ->
+                if (res.succeeded()) {
+                    ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
+                } else {
+                    ctx.fail(res.cause())
+                }
+            })
+        })
 
         vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
     }

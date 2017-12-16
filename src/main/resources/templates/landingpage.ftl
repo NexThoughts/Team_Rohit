@@ -10,7 +10,6 @@
             margin-left: 30%;
             margin-top: 5%;
         }
-
         #customers {
             font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
             border-collapse: collapse;
@@ -47,6 +46,15 @@
             margin-left: 51%;
             margin-top:25px;
         }
+
+        .rcorners2 {
+            border-radius: 25px;
+            border: 2px solid #73AD21;
+            padding: 20px;
+            width: 200px;
+            height: 150px;
+        }
+
     </style>
 </head>
 <body>
@@ -78,41 +86,27 @@
 
     </div>
     <div class="col-sm-6">
-        <table class="table" id="customers">
-            <thead>
-            <tr>
-                <th scope="col">Book Name</th>
-                <th scope="col">Book Author</th>
-                <th scope="col">Book Publisher</th>
-                <th scope="col">Book Price</th>
-            </tr>
-            </thead>
-            <tbody>
-            <#list context.books>
-                <#items as book>
-
-                <tr>
-                    <td>
-                    ${(book.name)!name}
-                    </td>
-                    <td>
-                    ${(book.author)!author}
-                    </td>
-                    <td>
-                    ${(book.publisher)!publisher}
-                    </td>
-                    <td>
-                    ${(book.bookPrice)!bookPrice}
-                    </td>
-                    <td>
-                        <a href="http://localhost:8085/modify/editBookById?bookId=${(book.uuid)!uuid}" rel="link">Edit</a>
-
-                    </td>
-                </tr>
-                </#items>
-            </#list>
-            </tbody>
-        </table>
+        <form action="${context.request().path()}/login" method="post" class="form-center">
+            <div class="form-border">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <label>Username</label>
+                        <input type="text" class="form-control" id="username" name="username"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <label>Password</label>
+                        <input type="text" class="form-control" id="password" name="password"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="button">
+                        <button type="submit" class="btn btn-primary" style="margin-top:4%;margin-left:14%;">Login</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="col-sm-3">
 
