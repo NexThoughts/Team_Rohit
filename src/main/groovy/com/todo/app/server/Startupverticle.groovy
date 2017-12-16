@@ -14,12 +14,16 @@ import io.vertx.ext.web.templ.FreeMarkerTemplateEngine
 
 class Startupverticle extends AbstractVerticle{
 
+    Router router = BaseUtil.router
+    def mongoClient = BaseUtil.mongoClient
+    def mongoAuth = BaseUtil.mongoAuth
+
     void start() {
         println "Hello Hurrah Started well!!!!!"
 
         println "Got the mongo CLient"+BaseUtil.mongoClient
 
-        Router router = BaseUtil.router
+
 
         router.get("/").handler({ ctx ->
             println "=========Landing Page================"
@@ -32,22 +36,40 @@ class Startupverticle extends AbstractVerticle{
                 }
             })
         })
-        router.get("/login").handler(this.&doLogin)
+        router.post("/login").handler(this.&doLogin)
+        router.post("/signup").handler(this.&doSignup)
         vertx.createHttpServer().requestHandler(router.&accept).listen(8085)
     }
 
     void doLogin(RoutingContext ctx){
-        MongoAuth authProvider = MongoAuth.create(mongoClient,new JsonObject())
+        println "==============In the login========================"
         JsonObject authInfo = new JsonObject()
         authInfo.put("username",ctx.request().getFormAttribute("username"))
         authInfo.put("password",ctx.request().getFormAttribute("password"))
-        authProvider.authenticate(authInfo,{res ->
+        println authInfo
+
+        mongoAuth.authenticate(authInfo,{res ->
             if(res.succeeded()){
-                println "========================User Signup================================"
+                println "========================User Logged in================================"
                 ctx.response().putHeader("location", "/").setStatusCode(302).end();
             }else{
-                println "===============Authentication not provided====================="
+                println "===============A" +
+                        "uthentication not provided====================="
             }
         })
+    }
+
+
+    void doSignup(RoutingContext ctx){
+        JsonObject authInfo = new JsonObject()
+        authInfo.put("username",ctx.request().getFormAttribute("username"))
+        authInfo.put("password",ctx.request().getFormAttribute("password"))
+        authInfo.put("name",ctx.request().getFormAttribute("name"))
+        if(BaseUtil.doSignup(authInfo)){
+
+        }else{
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
     }
 }

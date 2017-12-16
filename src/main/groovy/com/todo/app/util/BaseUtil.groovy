@@ -14,6 +14,7 @@ class BaseUtil extends AbstractVerticle {
     public static def mongoAuth = null
     public static Router router = null
     public static FreeMarkerTemplateEngine engine = FreeMarkerTemplateEngine.create()
+    public static List<String> roles = ['ROLE_USER']
 
     private final static String DEFAULT_DATABASE = "todo"
     private final static String DEFAULT_MONGO_URL = "mongodb://localhost:27017"
@@ -27,5 +28,38 @@ class BaseUtil extends AbstractVerticle {
         router =  Router.router(vertx)
         router.route().handler(BodyHandler.create())
     }
+
+    static Boolean doSignup(JsonObject user){
+        println user
+        if(!user)
+            return;
+        mongoAuth.insertUser(user?.getString("username"), user?.getString("password") , roles , null , {result->
+            if(result.succeeded()){
+                println "================ User Signup done==============="+result.result()
+                return  true
+            }else{
+                println "===========User signup not done==========="
+                return false
+            }
+        })
+    }
+    static long getDocuments(String collectionName){
+        println "COllection Name"+collectionName
+        JsonObject query = new JsonObject()
+        mongoClient.count(collectionName, query, {res ->
+
+            if (res.succeeded()) {
+
+                long num = res.result();
+                println num
+
+            } else {
+
+                res.cause().printStackTrace();
+
+            }
+        });
+    }
+
 
 }
