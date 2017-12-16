@@ -78,19 +78,14 @@
                 </button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li> <a href="/logout" rel="link">Logout</a></li>
+              <#--  <li> <a href="/logout" rel="link">Logout</a></li>-->
             </ul>
         </div>
     </nav>
 </div>
 <div class="row">
     <div class="col-sm-3">
-        <div class="col-sm-6">
-            <button type="button" class="btn btn-primary" onclick="showForm('signupFOrm');">Login</button>
-        </div>
-        <div class="col-sm-6">
-            <button type="button" class="btn btn-primary" onclick="showForm('loginFOrm');">Signup</button>
-        </div>
+
     </div>
     <div class="col-sm-6" id="signupFOrm">
         <form action="/login" method="post" class="form-center loginFOrm">
