@@ -145,6 +145,13 @@ class TaskVerticle extends AbstractVerticle {
                     ctx.put("taskName", task?.name)
                     ctx.put("taskId", task?.id)
                 }
+                engine.render(ctx, "templates/task/edit", { engRes ->
+                    if (engRes.succeeded()) {
+                        ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(engRes.result())
+                    } else {
+                        ctx.fail(engRes.cause())
+                    }
+                })
 
             } else {
                 res.cause().printStackTrace();
@@ -153,26 +160,15 @@ class TaskVerticle extends AbstractVerticle {
 
         })
 
-        engine.render(ctx, "templates/task/edit", { res ->
-            if (res.succeeded()) {
-                ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
-            } else {
-                ctx.fail(res.cause())
-            }
-        })
+
 
     }
 
     void update(RoutingContext ctx) {
-
-
         if(!BaseUtil.isSession){
             println "====URL SECURED============="
             ctx.response().putHeader("location", "/").setStatusCode(302).end();
         }
-
-
-
         println "==========Editing the Task===================="
         println "==========Editing the Task====================" + ctx.request().getParam("taskId")
         String taskId = ctx.request().getParam("taskId")
@@ -184,16 +180,10 @@ class TaskVerticle extends AbstractVerticle {
                     Task task = new Task(json)
                     ctx.put("task", task)
                 }
-
-
             } else {
-
                 res.cause().printStackTrace();
-
             }
-
         })
-
         engine.render(ctx, "templates/task/edit", { res ->
             if (res.succeeded()) {
                 ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
