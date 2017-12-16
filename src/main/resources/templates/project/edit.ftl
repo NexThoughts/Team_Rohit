@@ -5,8 +5,26 @@
         <div class="row">
             <div class="col-sm-5">
                 <label>Project Name</label>
-                <input type="text" class="form-control" id="name" name="name" value="${(context.projectName)!"Project"}"/>
-                <input type="hidden" class="form-control" id="projectId" name="projectId" value="${(context.projectId)!""}"/>
+                <input type="text" class="form-control" id="name" name="name"
+                       value="${(context.projectName)!"Project"}"/>
+                <input type="hidden" class="form-control" id="projectId" name="projectId"
+                       value="${(context.projectId)!""}"/>
+            </div>
+            <div class="col-sm-5">
+                <#if context.users??>
+                    <#list context.users>
+                        <select id="userList">
+
+                            <#items as user>
+                                <option value="${(user.id)!""}">"${(user.username)!""}"</option>
+                            </#items>
+                        </select>
+
+                    </#list>
+                <#else>
+
+                    NO USERS
+                </#if>
             </div>
         </div>
         <div class="row">

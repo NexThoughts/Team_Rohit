@@ -96,6 +96,7 @@ class ProjectVerticle extends AbstractVerticle {
     }
 
     void edit(RoutingContext ctx) {
+        List<User> users = []
 
 
         println "==========Editing the Project===================="
@@ -111,6 +112,23 @@ class ProjectVerticle extends AbstractVerticle {
                     ctx.put("projectName", project?.name)
                     ctx.put("projectId", project?.id)
                 }
+                mongoClient.find(BaseUtil.USER_COLLECTION, query, { uResp ->
+                    if (uResp.succeeded()) {
+                        for (JsonObject user : uResp.result()) {
+                            users.add(new User(user))
+                        }
+                        ctx.put("users",users)
+                    }
+
+                    println("########################"+users*.id)
+                    engine.render(ctx, "templates/project/edit", { response ->
+                        if (response.succeeded()) {
+                            ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(response.result())
+                        } else {
+                            ctx.fail(response.cause())
+                        }
+                    })
+                })
 
             } else {
                 res.cause().printStackTrace();
@@ -119,13 +137,6 @@ class ProjectVerticle extends AbstractVerticle {
 
         })
 
-        engine.render(ctx, "templates/project/edit", { res ->
-            if (res.succeeded()) {
-                ctx.response().putHeader(HttpHeaders.CONTENT_TYPE, "text/html").end(res.result())
-            } else {
-                ctx.fail(res.cause())
-            }
-        })
 
     }
 

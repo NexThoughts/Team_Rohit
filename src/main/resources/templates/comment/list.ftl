@@ -32,7 +32,20 @@
         </table>
     </div>
     <div class="col-sm-3">
+        <#if context.users??>
+            <#list context.users>
+                <select id="userList">
 
+                    <#items as user>
+                        <option value="${(user.id)!""}">"${(user.username)!""}"</option>
+                    </#items>
+                </select>
+
+            </#list>
+        <#else>
+
+            NO USERS
+        </#if>
     </div>
 </div>
 </@layout.myLayout>
