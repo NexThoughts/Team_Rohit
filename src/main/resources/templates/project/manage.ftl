@@ -1,15 +1,29 @@
 <#import "../layout/layout.ftl" as layout>
 <@layout.myLayout>
-<div class="row">
-    <header class="main-box-header clearfix">
+<form action="/project/createTask" method="post" class="form-center">
+    <div class="form-border">
+        <div class="row">
+            <div class="col-sm-5">
+                <label>${(context.project.name)}</label>
+            ${(context.project.id)}
 
-        <span style="float: right">
-            <a href="/task/add" class="create btn btn-large btn-primary" rel="link">Add</a>
-        </span>
-    </header>
-    <div class="col-sm-3">
+            <#--<input type="text" class="form-control" id="name" name="name" value="${(context.projectName)!"Project"}"/>-->
+            <#--<input type="hidden" class="form-control" id="projectId" name="projectId" value="${(context.projectId)!""}"/>-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <label>Task Name</label>
+                <input type="text" class="form-control" id="name" name="name"/>
+                <input type="hidden" class="form-control" id="projectId" name="projectId"
+                       value="${(context.project.id)}"/>
+                <button type="submit" class="btn btn-primary" style="margin-top:27%;margin-left:23%;">Submit</button>
+
+            </div>
+        </div>
 
     </div>
+
     <div class="col-sm-6">
         <table class="table" id="customers">
             <thead>
@@ -45,8 +59,6 @@
             </tbody>
         </table>
     </div>
-    <div class="col-sm-3">
+</form>
 
-    </div>
-</div>
 </@layout.myLayout>

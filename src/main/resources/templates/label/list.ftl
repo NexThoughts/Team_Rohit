@@ -1,6 +1,12 @@
 <#import "../layout/layout.ftl" as layout>
 <@layout.myLayout>
 <div class="row">
+    <header class="main-box-header clearfix">
+
+        <span style="float: right">
+            <a href="/label/add" class="create btn btn-large btn-primary" rel="link">Add</a>
+        </span>
+    </header>
     <div class="col-sm-3">
 
     </div>
