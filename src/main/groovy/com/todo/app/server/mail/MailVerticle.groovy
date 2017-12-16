@@ -35,6 +35,7 @@ class MailVerticle extends AbstractVerticle {
                 sendTo = event.body()
                 message.setFrom("rohit@fintechlabs.in");
                 message.setTo(sendTo);
+                message.setSubject("Greetings from Team Fintechlabs");
                 //message.setText("this is the plain message text");
                 message.setHtml(HtmlUtil.mailHtml.replaceAll("@@@USERNAME@@@",sendTo.split("@")[0]));
                 mailClient.sendMail(message, { result ->
