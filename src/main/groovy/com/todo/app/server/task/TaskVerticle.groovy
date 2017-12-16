@@ -37,6 +37,14 @@ class TaskVerticle extends AbstractVerticle {
 
 
     void list(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
         ctx.put("title", "Task")
         ctx.put("name", "Task List")
         JsonArray array = new JsonArray()
@@ -61,6 +69,15 @@ class TaskVerticle extends AbstractVerticle {
     }
 
     void add(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         JsonObject query = new JsonObject()
         mongoClient.find(DEFAULT_COLLECTION, query, { response ->
             if (response.succeeded()) {
@@ -78,6 +95,16 @@ class TaskVerticle extends AbstractVerticle {
     }
 
     void save(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
+
         println "111111111111111111111111111"
         println "========Going to save task=============" + ctx.request().getFormAttribute("name")
         JsonObject task = new JsonObject().put("name", ctx.request().getFormAttribute("name"))
@@ -95,6 +122,14 @@ class TaskVerticle extends AbstractVerticle {
     }
 
     void edit(RoutingContext ctx) {
+
+
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
 
 
         println "==========Editing the Task===================="
@@ -129,6 +164,15 @@ class TaskVerticle extends AbstractVerticle {
     }
 
     void update(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         println "==========Editing the Task===================="
         println "==========Editing the Task====================" + ctx.request().getParam("taskId")
         String taskId = ctx.request().getParam("taskId")
@@ -162,6 +206,15 @@ class TaskVerticle extends AbstractVerticle {
 
 
     void delete(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         println "==========Deleting the Task===================="
         String taskId = ctx.request().getParam("taskId")
         println "taskId   " + taskId
@@ -181,6 +234,15 @@ class TaskVerticle extends AbstractVerticle {
 
 
     void manage(RoutingContext ctx) {
+
+
+        if(!BaseUtil.isSession){
+            println "====URL SECURED============="
+            ctx.response().putHeader("location", "/").setStatusCode(302).end();
+        }
+
+
+
         String taskId = ctx.request().getParam("taskId")
         ctx.put("title", "Label")
         ctx.put("name", "Label List")

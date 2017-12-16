@@ -15,6 +15,7 @@ import io.vertx.ext.web.handler.CookieHandler
 import io.vertx.ext.web.handler.SessionHandler
 import io.vertx.ext.web.sstore.LocalSessionStore
 import io.vertx.ext.web.templ.FreeMarkerTemplateEngine
+import sun.security.provider.certpath.Vertex
 
 class BaseUtil extends AbstractVerticle {
 
@@ -48,7 +49,7 @@ class BaseUtil extends AbstractVerticle {
     }
 
 
-    static Boolean doSignup(JsonObject user){
+    static Boolean doSignup(JsonObject user, io.vertx.core.Vertx vertx){
         println user
         if(!user)
             return;

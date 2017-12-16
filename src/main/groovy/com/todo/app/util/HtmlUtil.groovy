@@ -142,7 +142,7 @@ class HtmlUtil {
             "                <!-- COPY -->\n" +
             "                <tr>\n" +
             "                    <td bgcolor=\"#ffffff\" align=\"left\" style=\"padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;\" >\n" +
-            "                        <p style=\"margin: 0;\">We're excited to have you get started.</p>\n" +
+            "                        <p style=\"margin: 0;\"><b>@@@USERNAME@@@</b>, We're excited to have you get started.</p>\n" +
             "                    </td>\n" +
             "                </tr>\n" +
             "                <!-- BULLETPROOF BUTTON -->\n" +
@@ -159,11 +159,6 @@ class HtmlUtil {
             "                    </td>\n" +
             "                </tr>\n" +
             "                <!-- COPY -->\n" +
-            "                <tr>\n" +
-            "                    <td bgcolor=\"#ffffff\" align=\"left\" style=\"padding: 0px 30px 0px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;\" >\n" +
-            "                        <p style=\"margin: 0;\">If that doesn't work, copy and paste the following link in your browser:</p>\n" +
-            "                    </td>\n" +
-            "                </tr>\n" +
             "                <!-- COPY -->\n" +
             "                <!-- COPY -->\n" +
             "                <tr>\n" +
@@ -174,7 +169,7 @@ class HtmlUtil {
             "                <!-- COPY -->\n" +
             "                <tr>\n" +
             "                    <td bgcolor=\"#ffffff\" align=\"left\" style=\"padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;\" >\n" +
-            "                        <p style=\"margin: 0;\">Cheers,<br>The Ceej Team</p>\n" +
+            "                        <p style=\"margin: 0;\">Cheers,<br>The fintachlabs Team</p>\n" +
             "                    </td>\n" +
             "                </tr>\n" +
             "            </table>\n" +
@@ -243,7 +238,7 @@ class HtmlUtil {
             "                <!-- ADDRESS -->\n" +
             "                <tr>\n" +
             "                    <td bgcolor=\"#f4f4f4\" align=\"left\" style=\"padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;\" >\n" +
-            "                        <p style=\"margin: 0;\">Ceej - 1234 Main Street - Anywhere, MA - 56789</p>\n" +
+            "                        <p style=\"margin: 0;\">Fintechlabs - 1234 Main Street - Anywhere, MA - 56789</p>\n" +
             "                    </td>\n" +
             "                </tr>\n" +
             "            </table>\n" +
